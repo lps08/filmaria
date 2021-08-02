@@ -35,6 +35,27 @@ export default function Filme() {
 
     }, [id, history]);
 
+    function salvaFilme () {
+
+        const minhaLista = localStorage.getItem('filmes');
+
+        // converte os itens buscados salvos em json, ou lista vazia, caso vazia
+        let filmesSalvos = JSON.parse(minhaLista) || [];
+
+        // se tiver algum filme salvo, ignorar ele
+        const hasFilme = filmesSalvos.some( (filmesSalvo) => filmesSalvo.id === filme.id )
+
+        if (hasFilme) {
+            alert('Você já possui esse filme salvo.');
+            return;
+        }
+
+        filmesSalvos.push( filme )
+        localStorage.setItem( 'filmes', JSON.stringify(filmesSalvos) );
+        alert('Filme salvo com sucesso!');
+
+    }
+
     if (loading) {
         return (
             <div className="filme-info">
@@ -52,7 +73,7 @@ export default function Filme() {
             {filme.sinopse}
 
             <div>
-                <button onClick={() => {}}>Salvar</button>
+                <button onClick={ salvaFilme }>Salvar</button>
                 <button>
                     <a target="blank" href={`https://youtube.com/results?search_query=${filme.nome} trailler`}>
                         Trailler
